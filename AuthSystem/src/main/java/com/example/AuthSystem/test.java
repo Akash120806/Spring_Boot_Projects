@@ -1,4 +1,4 @@
 package com.example.AuthSystem;
 
-public class Test {
+public class test {
 }
