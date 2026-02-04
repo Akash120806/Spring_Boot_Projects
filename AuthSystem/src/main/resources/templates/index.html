@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 380px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+
+        h2, h4 {
+            text-align: center;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 11px;
+            margin-top: 12px;
+            background: #667eea;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5563d6;
+        }
+
+        .msg {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .success { color: green; }
+        .error { color: red; }
+
+        .register {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .profile {
+            display: none;
+        }
+
+        .logout {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div id="loginBox">
+        <h2>Login</h2>
+
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+        <div id="loginMsg" class="msg"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="profileBox" class="profile">
+        <h2>Client Profile</h2>
+
+        <p><b>Username:</b> <span id="p_username"></span></p>
+        <p><b>Name:</b> <span id="p_name"></span></p>
+        <p><b>Email:</b> <span id="p_email"></span></p>
+        <p><b>Occupation:</b> <span id="p_occupation"></span></p>
+        <p><b>Mobile:</b> <span id="p_mobile"></span></p>
+        <p><b>Age:</b> <span id="p_age"></span></p>
+
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="register" id="registerBox">
+        <h4>New User? Register</h4>
+
+        <input type="text" id="r_username" placeholder="Username">
+        <input type="text" id="r_name" placeholder="Name">
+        <input type="email" id="r_email" placeholder="Email">
+        <input type="password" id="r_password" placeholder="Password">
+
+        <button onclick="register()">Register</button>
+        <div id="registerMsg" class="msg"></div>
+    </div>
+
+</div>
+
+<script>
+    const BASE_URL = "http://localhost:8080/client";
+
+    function register() {
+        const data = {
+            username: r_username.value,
+            name: r_name.value,
+            email: r_email.value,
+            password: r_password.value,
+            occupation: "NA",
+            mobile: "0000000000",
+            age: 18
+        };
+
+        fetch(`${BASE_URL}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (!res.ok) return res.text().then(t => { throw new Error(t); });
+            return res.text();
+        })
+        .then(msg => {
+            registerMsg.innerText = msg;
+            registerMsg.className = "msg success";
+        })
+        .catch(err => {
+            registerMsg.innerText = err.message;
+            registerMsg.className = "msg error";
+        });
+    }
+
+    function login() {
+        const username = loginUsername.value;
+        const password = loginPassword.value;
+
+        fetch(`${BASE_URL}/login?username=${username}&password=${password}`, {
+            method: "POST"
+        })
+        .then(res => {
+            if (!res.ok) return res.text().then(t => { throw new Error(t); });
+            return res.json();
+        })
+        .then(client => {
+            loginBox.style.display = "none";
+            registerBox.style.display = "none";
+            profileBox.style.display = "block";
+
+            p_username.innerText = client.username;
+            p_name.innerText = client.name;
+            p_email.innerText = client.email;
+            p_occupation.innerText = client.occupation;
+            p_mobile.innerText = client.mobile;
+            p_age.innerText = client.age;
+        })
+        .catch(err => {
+            loginMsg.innerText = err.message;
+            loginMsg.className = "msg error";
+        });
+    }
+
+    function logout() {
+        location.reload();
+    }
+</script>
+
+</body>
+</html>

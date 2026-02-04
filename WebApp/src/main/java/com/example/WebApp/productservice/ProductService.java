@@ -2,7 +2,6 @@ package com.example.WebApp.productservice;
 
 import com.example.WebApp.Model.Product;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Arrays;

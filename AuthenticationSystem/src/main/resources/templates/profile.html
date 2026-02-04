@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f8f9fa; padding: 50px; text-align: center; }
+        .profile-card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); display: inline-block; text-align: left; min-width: 300px; }
+        .detail { margin: 15px 0; font-size: 18px; color: #333; }
+        .label { font-weight: bold; color: #666; width: 100px; display: inline-block; }
+        .logout-btn { display: block; margin-top: 30px; text-align: center; color: #d9534f; font-weight: bold; text-decoration: none; border: 1px solid #d9534f; padding: 10px; border-radius: 5px; }
+        .logout-btn:hover { background: #d9534f; color: white; }
+    </style>
+</head>
+<body>
+<div class="profile-card">
+    <h1 style="margin-top:0;">Welcome, <span th:text="${user.username}">User</span>!</h1>
+    <hr>
+    <div class="detail"><span class="label">Email:</span> <span th:text="${user.email}">user@example.com</span></div>
+    <div class="detail"><span class="label">Mobile:</span> <span th:text="${user.mobile}">0000000000</span></div>
+    <div class="detail"><span class="label">User ID:</span> <span th:text="${user.id}">1</span></div>
+
+    <a href="/user/logout" class="logout-btn">Logout</a>
+</div>
+</body>
+</html>
