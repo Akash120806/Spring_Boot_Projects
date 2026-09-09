@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -37,7 +39,7 @@ public class UserController {
 
         if (user != null) {
             session.setAttribute("loggedUser", user);
-            return "Login successful! You can now visit /user/profile";
+            return "Login successful! You can now visit /user/profile" ;
         }
 
         return "Invalid username or password. Please go back and try again.";
@@ -46,10 +48,12 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public String register(@ModelAttribute User user) {
-        service.register(user);
-        return "User registered successfully! You can now go to /user/login";
+    public String register(@RequestBody User user) {
+        User savedUser = service.register(user);
+
+        return "Registered successfully. Your ID is: " + savedUser.getId();
     }
+
 
     @GetMapping("/profile")
     @ResponseBody
@@ -67,5 +71,16 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "Logged out successfully.";
+
+    }
+    @GetMapping("/all")
+    @ResponseBody
+    public List<User> all(){
+        return service.findall();
+    }
+    @PostMapping("/findbyid/{id}")
+    @ResponseBody
+    public User findid( @PathVariable int id){
+        return service.findid(id);
     }
 }

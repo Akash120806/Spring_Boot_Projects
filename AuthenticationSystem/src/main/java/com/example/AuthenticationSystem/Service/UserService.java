@@ -4,6 +4,8 @@ import com.example.AuthenticationSystem.Model.User;
 import com.example.AuthenticationSystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -14,12 +16,21 @@ public class UserService {
     }
 
     // Register user
-    public void register(User user) {
-        repo.save(user);
+    public User register(User user) {
+        return repo.save(user);
     }
 
     // Login user
     public User login(String username, String password) {
         return repo.findByUsernameAndPassword(username, password);
     }
+
+    //find all user
+     public  List<User >findall(){
+        return repo.findAll();
+    }
+    public User findid(int id){
+        return repo.findById(id);
+    }
+
 }
