@@ -83,4 +83,14 @@ public class UserController {
     public User findid( @PathVariable int id){
         return service.findid(id);
     }
+    @PostMapping("/delete")
+    @ResponseBody
+    public String delete(@RequestBody User user){
+          service.deleteprofile(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword()
+        );
+          return  "deleted";
+    }
 }
