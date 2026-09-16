@@ -24,4 +24,7 @@ public class Product {
     private Date releasedate;
     private boolean availability;
     private int quantity;
+    private  String imageName;
+    private String imageType;
+    private byte[] imageData;
 }
