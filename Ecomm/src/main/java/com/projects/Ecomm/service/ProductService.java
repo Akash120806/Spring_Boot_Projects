@@ -19,5 +19,8 @@ public class ProductService {
     public Optional<Product> getbyId(int id){
         return productrepo.findById(id);
     }
+    public void addproduct(Product product){
+        productrepo.save(product);
+    }
 
 }
